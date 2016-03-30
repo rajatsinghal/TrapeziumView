@@ -31,9 +31,17 @@ public class TrapeziumFrameLayout extends View {
 	}
 
 	void init(Context context, AttributeSet attrs, int defStyle) {
-		mask_paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
-		mask_paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SCREEN));
-		setLayerType(LAYER_TYPE_SOFTWARE, mask_paint);
+		//mask_paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+		//mask_paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+		//setLayerType(LAYER_TYPE_SOFTWARE, mask_paint);
+
+		setLayerType(LAYER_TYPE_SOFTWARE, null);
+		//setDrawingCacheEnabled(true);
+		mask_paint = new Paint();
+		mask_paint.setColor(0xFFFFFF);
+		mask_paint.setAlpha(0);
+		mask_paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY));
+		mask_paint.setAntiAlias(true);
 
 		left_path = new Path();
 		right_path = new Path();

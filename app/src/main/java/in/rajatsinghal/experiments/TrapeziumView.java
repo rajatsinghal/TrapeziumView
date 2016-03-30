@@ -80,14 +80,12 @@ public class TrapeziumView extends View {
 
 		Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
+		canvas.drawARGB(0, 0, 0, 0);
 
-		final Paint paint = new Paint();
-		final Rect rect = new Rect(0, 0, width, height);
-
+		Paint paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setFilterBitmap(true);
 		paint.setDither(true);
-		canvas.drawARGB(0, 0, 0, 0);
 		paint.setColor(Color.parseColor("#FF0000"));
 
 		int x_distance = (int) (height / Math.tan(Math.toRadians(60)));
@@ -101,6 +99,7 @@ public class TrapeziumView extends View {
 		canvas.drawPath(path, paint);
 
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+		Rect rect = new Rect(0, 0, width, height);
 		canvas.drawBitmap(layer_bitmap, rect, rect, paint);
 
 		return output;

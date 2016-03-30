@@ -1,6 +1,7 @@
 package in.rajatsinghal.experiments;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,50 +19,64 @@ import android.view.View;
 
 public class TrapeziumView extends View {
 
+	public static int default_top_color = Color.parseColor("#FF0000");
+	public static int default_bottom_color = Color.parseColor("#00FF00");
+	public static int default_slant_angle = 60;
+
 	public int top_color;
 	public int bottom_color;
-	public int angle;
+	public int slant_angle;
+
+	public LayerDrawable layer_drawable;
 
 	public TrapeziumView(Context context) {
 		super(context);
+		init(context, null, 0);
 	}
 
 	public TrapeziumView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		init(context, attrs, 0);
 	}
 
 	public TrapeziumView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		init(context, attrs, defStyle);
 	}
 
-	public void init()
+	void init(Context context, AttributeSet attrs, int defStyle) {
+		top_color = default_top_color;
+		bottom_color = default_bottom_color;
+		slant_angle = default_slant_angle;
+
+		if (attrs != null) {
+			TypedArray attributes_values = context.getTheme().obtainStyledAttributes(attrs, R.styleable.TrapeziumView, 0, 0);
+			top_color = attributes_values.getColor(R.styleable.TrapeziumView_top_color, default_top_color);
+			bottom_color = attributes_values.getColor(R.styleable.TrapeziumView_bottom_color, default_bottom_color);
+			slant_angle = attributes_values.getInt(R.styleable.TrapeziumView_slant_angle, default_slant_angle);
+		}
+
+		ShapeDrawable top_drawable = new ShapeDrawable(new RectShape());
+		top_drawable.getPaint().setColor(top_color);
+
+		ShapeDrawable bottom_drawable = new ShapeDrawable(new RectShape());
+		bottom_drawable.getPaint().setColor(bottom_color);
+
+		layer_drawable = new LayerDrawable(new Drawable[]{top_drawable, bottom_drawable});
+	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		Bitmap b = getOrignalBitmap(getWidth(), getHeight());
-		Bitmap roundBitmap = getCroppedBitmap(b, getWidth(), getHeight());
-		canvas.drawBitmap(roundBitmap, 0, 0, null);
+		canvas.drawBitmap(getCroppedBitmap(getWidth(), getHeight()), 0, 0, null);
 	}
 
-	public Bitmap getOrignalBitmap(int width, int height) {
-		ShapeDrawable shape1 = new ShapeDrawable(new RectShape());
-		shape1.getPaint().setColor(Color.RED);
+	public Bitmap getCroppedBitmap(int width, int height) {
+		Bitmap layer_bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
-		ShapeDrawable shape2 = new ShapeDrawable(new RectShape());
-		shape2.getPaint().setColor(Color.GREEN);
-
-		LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{shape1, shape2});
-
-		layerDrawable.setLayerInset(0, 0, 0, 0, 0);
-		layerDrawable.setLayerInset(1, 0, height / 2, 0, 0);
-
-		Bitmap b = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-		layerDrawable.setBounds(0, 0, getWidth(), getHeight());
-		layerDrawable.draw(new Canvas(b));
-		return b;
-	}
-
-	public static Bitmap getCroppedBitmap(Bitmap sbmp, int width, int height) {
+		layer_drawable.setLayerInset(0, 0, 0, 0, 0);
+		layer_drawable.setLayerInset(1, 0, height / 2, 0, 0);
+		layer_drawable.setBounds(0, 0, width, height);
+		layer_drawable.draw(new Canvas(layer_bitmap));
 
 		Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
@@ -86,7 +101,7 @@ public class TrapeziumView extends View {
 		canvas.drawPath(path, paint);
 
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-		canvas.drawBitmap(sbmp, rect, rect, paint);
+		canvas.drawBitmap(layer_bitmap, rect, rect, paint);
 
 		return output;
 	}

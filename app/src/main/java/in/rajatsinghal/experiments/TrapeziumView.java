@@ -1,74 +1,94 @@
 package in.rajatsinghal.experiments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.PathShape;
+import android.graphics.drawable.shapes.RectShape;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class TrapeziumView extends View {
 
-	private ShapeDrawable mDrawable;
-	Path left_path;
-	Path right_path;
+	public int top_color;
+	public int bottom_color;
+	public int angle;
 
 	public TrapeziumView(Context context) {
 		super(context);
-		init(context, null, 0);
 	}
 
 	public TrapeziumView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init(context, attrs, 0);
 	}
 
 	public TrapeziumView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		init(context, attrs, defStyle);
 	}
 
-	void init(Context context, AttributeSet attrs, int defStyle) {
-		/*int x = 10;
-		int y = 10;
-		int width = 300;
-		int height = 50;
+	public void init()
 
-		mDrawable = new ShapeDrawable(new OvalShape());
-		mDrawable.getPaint().setColor(0xff74AC23);
-		mDrawable.setBounds(x, y, x + width, y + height);*/
-
-		left_path = new Path();
-		right_path = new Path();
-	}
-
+	@Override
 	protected void onDraw(Canvas canvas) {
-		//mDrawable.draw(canvas);
+		Bitmap b = getOrignalBitmap(getWidth(), getHeight());
+		Bitmap roundBitmap = getCroppedBitmap(b, getWidth(), getHeight());
+		canvas.drawBitmap(roundBitmap, 0, 0, null);
+	}
 
-		int width = getWidth();
-		int height = getHeight();
+	public Bitmap getOrignalBitmap(int width, int height) {
+		ShapeDrawable shape1 = new ShapeDrawable(new RectShape());
+		shape1.getPaint().setColor(Color.RED);
+
+		ShapeDrawable shape2 = new ShapeDrawable(new RectShape());
+		shape2.getPaint().setColor(Color.GREEN);
+
+		LayerDrawable layerDrawable = new LayerDrawable(new Drawable[]{shape1, shape2});
+
+		layerDrawable.setLayerInset(0, 0, 0, 0, 0);
+		layerDrawable.setLayerInset(1, 0, height / 2, 0, 0);
+
+		Bitmap b = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+		layerDrawable.setBounds(0, 0, getWidth(), getHeight());
+		layerDrawable.draw(new Canvas(b));
+		return b;
+	}
+
+	public static Bitmap getCroppedBitmap(Bitmap sbmp, int width, int height) {
+
+		Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(output);
+
+		final Paint paint = new Paint();
+		final Rect rect = new Rect(0, 0, width, height);
+
+		paint.setAntiAlias(true);
+		paint.setFilterBitmap(true);
+		paint.setDither(true);
+		canvas.drawARGB(0, 0, 0, 0);
+		paint.setColor(Color.parseColor("#FF0000"));
 
 		int x_distance = (int) (height / Math.tan(Math.toRadians(60)));
+		Path path = new Path();
+		path.moveTo(0, 0);
+		path.lineTo(width, 0);
+		path.lineTo(width - x_distance, height);
+		path.lineTo(x_distance, height);
+		path.close();
 
-		left_path.moveTo(0, 0);
-		left_path.lineTo(0, height);
-		left_path.lineTo(x_distance, height);
-		left_path.close();
-		//canvas.drawPath(left_path, mask_paint);
+		canvas.drawPath(path, paint);
 
-		mDrawable = new ShapeDrawable(new PathShape(left_path, 1, 1));
-		mDrawable.getPaint().setColor(0xff74AC23);
-		mDrawable.setBounds(0, 0, width, height);
-		mDrawable.draw(canvas);
+		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+		canvas.drawBitmap(sbmp, rect, rect, paint);
 
-		/*right_path.moveTo(width, 0);
-		right_path.lineTo(width, height);
-		right_path.lineTo(width - x_distance, height);
-		right_path.close();*/
-		//canvas.drawPath(right_path, mask_paint);
-
-
+		return output;
 	}
 
 }

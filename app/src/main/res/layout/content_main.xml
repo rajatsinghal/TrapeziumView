@@ -14,35 +14,8 @@
     tools:context="in.rajatsinghal.experiments.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="400dp"
-        android:layout_height="400dp"
-        android:src="@drawable/clip_source"
-        android:visibility="gone"/>
-
-    <in.rajatsinghal.experiments.TrapeziumFrameLayout
-        android:layout_width="480dp"
-        android:layout_height="60dp"
-        android:background="@drawable/header_px"
-        android:visibility="gone"/>
-
     <in.rajatsinghal.experiments.TrapeziumView
         android:layout_width="480dp"
-        android:layout_height="60dp"
-        android:background="@drawable/header_px"
-        android:visibility="gone"/>
-
-    <in.rajatsinghal.experiments.MLRoundedImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/alliance"
-        android:visibility="gone"/>
-
-    <in.rajatsinghal.experiments.TrapeziumImageView
-        android:layout_width="480dp"
-        android:layout_height="60dp"
-        android:src="@drawable/header_px"/>
-
+        android:layout_height="60dp"/>
 
 </RelativeLayout>

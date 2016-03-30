@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="TrapeziumView">
+        <attr name="top_color" format="color"/>
+        <attr name="bottom_color" format="color"/>
+        <attr name="slant_angle" format="integer"/>
+    </declare-styleable>
+</resources>

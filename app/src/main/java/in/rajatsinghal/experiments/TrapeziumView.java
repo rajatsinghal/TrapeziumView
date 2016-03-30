@@ -19,13 +19,16 @@ import android.view.View;
 
 public class TrapeziumView extends View {
 
+	//Direction 0: Up, 1: Down
 	public static int default_top_color = Color.parseColor("#FF0000");
 	public static int default_bottom_color = Color.parseColor("#00FF00");
 	public static int default_slant_angle = 60;
+	public static int default_direction = 0;
 
 	public int top_color;
 	public int bottom_color;
 	public int slant_angle;
+	public int direction;
 
 	public LayerDrawable layer_drawable;
 
@@ -54,6 +57,7 @@ public class TrapeziumView extends View {
 			top_color = attributes_values.getColor(R.styleable.TrapeziumView_top_color, default_top_color);
 			bottom_color = attributes_values.getColor(R.styleable.TrapeziumView_bottom_color, default_bottom_color);
 			slant_angle = attributes_values.getInt(R.styleable.TrapeziumView_slant_angle, default_slant_angle);
+			direction = attributes_values.getInteger(R.styleable.TrapeziumView_direction, default_direction);
 		}
 
 		ShapeDrawable top_drawable = new ShapeDrawable(new RectShape());
@@ -88,12 +92,19 @@ public class TrapeziumView extends View {
 		paint.setDither(true);
 		paint.setColor(Color.parseColor("#FF0000"));
 
-		int x_distance = (int) (height / Math.tan(Math.toRadians(60)));
+		int x_distance = (int) (height / Math.tan(Math.toRadians(slant_angle)));
 		Path path = new Path();
-		path.moveTo(0, 0);
-		path.lineTo(width, 0);
-		path.lineTo(width - x_distance, height);
-		path.lineTo(x_distance, height);
+		if (direction == 0) {
+			path.moveTo(x_distance, 0);
+			path.lineTo(width - x_distance, 0);
+			path.lineTo(width, height);
+			path.lineTo(0, height);
+		} else {
+			path.moveTo(0, 0);
+			path.lineTo(width, 0);
+			path.lineTo(width - x_distance, height);
+			path.lineTo(x_distance, height);
+		}
 		path.close();
 
 		canvas.drawPath(path, paint);

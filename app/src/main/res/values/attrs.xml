@@ -3,5 +3,9 @@
         <attr name="top_color" format="color"/>
         <attr name="bottom_color" format="color"/>
         <attr name="slant_angle" format="integer"/>
+        <attr name="direction" format="enum">
+            <enum name="up" value="0"/>
+            <enum name="down" value="1"/>
+        </attr>
     </declare-styleable>
 </resources>

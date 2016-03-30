@@ -16,9 +16,21 @@
     tools:showIn="@layout/activity_main">
 
     <in.rajatsinghal.experiments.TrapeziumView
+        android:id="@+id/up_trapezium"
         android:layout_width="480dp"
         android:layout_height="60dp"
         custom:bottom_color="#0000FF"
+        custom:direction="up"
+        custom:slant_angle="60"
+        custom:top_color="#00FF00"/>
+
+    <in.rajatsinghal.experiments.TrapeziumView
+        android:layout_width="480dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/up_trapezium"
+        android:layout_marginTop="30dp"
+        custom:bottom_color="#0000FF"
+        custom:direction="down"
         custom:slant_angle="60"
         custom:top_color="#00FF00"/>
 

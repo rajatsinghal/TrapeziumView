@@ -15,23 +15,40 @@
     tools:context="in.rajatsinghal.experiments.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <in.rajatsinghal.experiments.TrapeziumView
-        android:id="@+id/up_trapezium"
-        android:layout_width="480dp"
-        android:layout_height="60dp"
-        custom:bottom_color="#0000FF"
-        custom:direction="up"
-        custom:slant_angle="60"
-        custom:top_color="#00FF00"/>
+    <RelativeLayout
+        android:id="@+id/up_trapezium_view"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <in.rajatsinghal.experiments.TrapeziumView
+            android:id="@+id/up_trapezium"
+            android:layout_width="480dp"
+            android:layout_height="match_parent"
+            custom:bottom_color="#D3D5D6"
+            custom:direction="up"
+            custom:slant_angle="72"
+            custom:top_color="#F1F4F7"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Get Started.."
+            android:textColor="#333333"
+            android:textSize="27sp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
 
     <in.rajatsinghal.experiments.TrapeziumView
+        android:id="@+id/down_trapezium"
         android:layout_width="480dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/up_trapezium"
+        android:layout_height="48dp"
+        android:layout_below="@+id/up_trapezium_view"
         android:layout_marginTop="30dp"
-        custom:bottom_color="#0000FF"
+        custom:bottom_color="#D3D5D6"
         custom:direction="down"
-        custom:slant_angle="60"
-        custom:top_color="#00FF00"/>
+        custom:slant_angle="72"
+        custom:top_color="#F1F4F7"/>
 
 </RelativeLayout>

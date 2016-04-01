@@ -31,6 +31,8 @@ public class TrapeziumView extends View {
 	public int direction;
 
 	public LayerDrawable layer_drawable;
+	Paint path_paint;
+	Paint bitmap_paint;
 
 	public TrapeziumView(Context context) {
 		super(context);
@@ -67,6 +69,17 @@ public class TrapeziumView extends View {
 		bottom_drawable.getPaint().setColor(bottom_color);
 
 		layer_drawable = new LayerDrawable(new Drawable[]{top_drawable, bottom_drawable});
+
+		path_paint = new Paint();
+		path_paint.setAntiAlias(true);
+		path_paint.setFilterBitmap(true);
+		path_paint.setDither(true);
+
+		bitmap_paint = new Paint();
+		bitmap_paint.setAntiAlias(true);
+		bitmap_paint.setFilterBitmap(true);
+		bitmap_paint.setDither(true);
+		bitmap_paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 	}
 
 	@Override
@@ -86,12 +99,6 @@ public class TrapeziumView extends View {
 		Canvas canvas = new Canvas(output);
 		canvas.drawARGB(0, 0, 0, 0);
 
-		Paint paint = new Paint();
-		paint.setAntiAlias(true);
-		paint.setFilterBitmap(true);
-		paint.setDither(true);
-		paint.setColor(Color.parseColor("#FF0000"));
-
 		int x_distance = (int) (height / Math.tan(Math.toRadians(slant_angle)));
 		Path path = new Path();
 		if (direction == 0) {
@@ -107,11 +114,10 @@ public class TrapeziumView extends View {
 		}
 		path.close();
 
-		canvas.drawPath(path, paint);
+		canvas.drawPath(path, path_paint);
 
-		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 		Rect rect = new Rect(0, 0, width, height);
-		canvas.drawBitmap(layer_bitmap, rect, rect, paint);
+		canvas.drawBitmap(layer_bitmap, rect, rect, bitmap_paint);
 
 		return output;
 	}

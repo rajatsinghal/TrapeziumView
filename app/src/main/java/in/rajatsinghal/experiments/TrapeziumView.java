@@ -31,6 +31,7 @@ public class TrapeziumView extends View {
 	public int direction;
 
 	public LayerDrawable layer_drawable;
+	Path path;
 	Paint path_paint;
 	Paint bitmap_paint;
 
@@ -70,6 +71,8 @@ public class TrapeziumView extends View {
 
 		layer_drawable = new LayerDrawable(new Drawable[]{top_drawable, bottom_drawable});
 
+		path = new Path();
+
 		path_paint = new Paint();
 		path_paint.setAntiAlias(true);
 		path_paint.setFilterBitmap(true);
@@ -100,7 +103,6 @@ public class TrapeziumView extends View {
 		canvas.drawARGB(0, 0, 0, 0);
 
 		int x_distance = (int) (height / Math.tan(Math.toRadians(slant_angle)));
-		Path path = new Path();
 		if (direction == 0) {
 			path.moveTo(x_distance, 0);
 			path.lineTo(width - x_distance, 0);

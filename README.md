@@ -11,4 +11,4 @@ How to use in layout:
         custom:top_color="#00FF00"/>
         
         
-![alt tag](https://cloud.githubusercontent.com/assets/1267901/14138018/68813598-f688-11e5-9ec0-b45f3064f728.png)
+![alt tag](https://raw.githubusercontent.com/rajatsinghal/TrapeziumView/08429015959984ecd8370262c6a947f66c3a5cb7/app/src/main/res/drawable/Screenshot_2016-04-01-20-43-21.png)
